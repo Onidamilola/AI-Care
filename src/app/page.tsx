@@ -38,16 +38,26 @@ export default function Home() {
     try {
       const { data: { user } } = await supabase.auth.getUser();
       if (user) {
-        const { data: profile } = await supabase
+        const { data: profile, error } = await supabase
           .from('profiles')
           .select('*')
           .eq('id', user.id)
           .single();
         
-        setUserProfile(profile);
+        if (error) {
+          console.error('Error fetching profile from DB:', error);
+          // If profile table is empty, try using user metadata as fallback
+          setUserProfile({
+            id: user.id,
+            full_name: user.user_metadata?.full_name || user.email?.split('@')[0],
+            condition: user.user_metadata?.condition || 'COPD'
+          });
+        } else {
+          setUserProfile(profile);
+        }
       }
     } catch (err) {
-      console.error('Error fetching user profile:', err);
+      console.error('Unexpected error fetching user data:', err);
     }
   };
 

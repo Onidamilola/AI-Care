@@ -11,7 +11,12 @@ export async function middleware(request: NextRequest) {
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
   const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
 
+  // If keys are missing, we can't perform auth checks. 
+  // In production (Vercel), this is a critical configuration error.
   if (!supabaseUrl || !supabaseAnonKey) {
+    if (process.env.NODE_ENV === 'production') {
+      console.error('CRITICAL: Supabase environment variables are missing in production!')
+    }
     return response
   }
 
@@ -61,7 +66,9 @@ export async function middleware(request: NextRequest) {
     }
   )
 
-  const { data: { user } } = await supabase.auth.getUser()
+  // Use getSession to refresh the session if needed
+  const { data: { session } } = await supabase.auth.getSession()
+  const user = session?.user
 
   // 1. If user is NOT logged in and trying to access dashboard or profile
   if (!user && (request.nextUrl.pathname === '/' || request.nextUrl.pathname === '/profile')) {
