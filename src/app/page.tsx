@@ -25,6 +25,8 @@ const MOCK_PROFILE: PatientProfile = {
   },
 };
 
+export const dynamic = 'force-dynamic';
+
 export default function Home() {
   const [data, setData] = useState<VitalsData[]>([]);
   const [prediction, setPrediction] = useState<PredictionResult | null>(null);

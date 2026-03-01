@@ -6,6 +6,8 @@ import { useRouter } from 'next/navigation';
 import { Activity, Mail, Lock, ArrowRight, Github, AlertCircle } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
 
+export const dynamic = 'force-dynamic';
+
 export default function LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');

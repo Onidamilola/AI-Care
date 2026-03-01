@@ -19,6 +19,8 @@ import {
   Loader2
 } from 'lucide-react';
 
+export const dynamic = 'force-dynamic';
+
 export default function ProfilePage() {
   const [isEditing, setIsEditing] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);

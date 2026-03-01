@@ -14,6 +14,8 @@ import {
 } from "lucide-react";
 import { supabase } from "@/lib/supabase";
 
+export const dynamic = 'force-dynamic';
+
 export default function SignupPage() {
   const [formData, setFormData] = useState({
     name: "",
